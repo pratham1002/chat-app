@@ -12,18 +12,22 @@ const publicDirectoryPath = path.join(__dirname, "../public");
 
 app.use(express.static(publicDirectoryPath));
 
-let count = 0;
-
 io.on("connection", (socket) => {
     console.log("New connection");
 
-    socket.emit("countUpdated", count);
+    const message = "Welcome";
 
-    socket.on("increment", () => {
-    count++;
-    // socket.emit("countUpdated", count);
-    io.emit("countUpdated", count);
-});
+    socket.emit("WelcomeUser", message);
+
+//     socket.on("return", () => {
+// //     count++;
+// //     // socket.emit("countUpdated", count); // sends back only to current user
+//     io.emit("returnSuccess"); // sends back to all users
+//     });
+    
+    socket.on("sendMessage", (message) => {
+        io.emit("WelcomeUser", message);
+    });
 });
 
 server.listen(port, () => {
